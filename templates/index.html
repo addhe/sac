@@ -44,44 +44,29 @@
     </style>
 </head>
 <body>
-    <h2>Kalkulator Average Saham</h2>
+    <h2>Kalkulator Average Down Saham</h2>
     <form method="post">
-        <div id="stock-inputs">
-            <div class="input-group">
-                <input type="number" name="stocks[]" placeholder="Jumlah Saham" step="any">
-                <input type="number" name="prices[]" placeholder="Harga Saham" step="any">
-            </div>
+        <div class="input-group">
+            <input type="text" name="stock_name" placeholder="Nama Saham (e.g., BBRI)" required>
         </div>
-        <button type="button" onclick="addStockInput()">+ Tambah Pembelian</button>
-        <button type="submit">Hitung</button>
+        <div class="input-group">
+            <input type="number" name="current_lots" placeholder="Jumlah Lot Dimiliki" step="any" required>
+            <input type="number" name="current_average" placeholder="Harga Rata-rata Saat Ini" step="any" required>
+        </div>
+        <div class="input-group">
+            <input type="number" name="new_lots" placeholder="Jumlah Lot Akan Dibeli" step="any" required>
+            <input type="number" name="market_price" placeholder="Harga Beli / Market Price" step="any" required>
+        </div>
+        <button type="submit">Hitung Estimasi Average Baru</button>
     </form>
 
-    {% if result is defined %}
+    {% if result %}
     <div class="result">
-        <h4>Hasil:</h4>
-        <p>Harga Rata-rata (Average): <strong>Rp {{ "{:,.2f}".format(result) }}</strong></p>
-        <p>Total Saham: <strong>{{ total_shares }}</strong></p>
-        <p>Total Biaya: <strong>Rp {{ "{:,.2f}".format(total_cost) }}</strong></p>
+        <h4>Hasil Estimasi untuk Saham {{ stock_name }}:</h4>
+        <p>Harga Rata-rata Baru: <strong>Rp {{ "{:,.2f}".format(new_average) }}</strong></p>
+        <p>Total Lot Setelah Pembelian: <strong>{{ "{:,.2f}".format(total_shares) }} lot</strong></p>
+        <p>Total Nilai Investasi: <strong>Rp {{ "{:,.2f}".format(total_cost) }}</strong></p>
     </div>
     {% endif %}
-
-    {% if error %}
-    <div class="result" style="background-color: #f8d7da; border-color: #f5c6cb;">
-        <p style="color: #721c24;">Error: {{ error }}</p>
-    </div>
-    {% endif %}
-
-    <script>
-        function addStockInput() {
-            const container = document.getElementById('stock-inputs');
-            const newInputs = document.createElement('div');
-            newInputs.className = 'input-group';
-            newInputs.innerHTML = `
-                <input type="number" name="stocks[]" placeholder="Jumlah Saham" step="any">
-                <input type="number" name="prices[]" placeholder="Harga Saham" step="any">
-            `;
-            container.appendChild(newInputs);
-        }
-    </script>
 </body>
 </html>
